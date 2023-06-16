@@ -10,7 +10,7 @@ routes.get('/images', (req, res) => {
   res.send('Processing image');
   const getMetadata = async (): Promise<any> => {
     try {
-      const metadata = await sharp('../cd0292-building-a-server-project-starter/images/encenadaport.jpg').metadata();
+      const metadata = await sharp('../assets/fjord.jpg').metadata();
       console.log(metadata);
     } catch (error) {
       console.log(`An error occurred during processing: ${error}`);
@@ -20,7 +20,7 @@ routes.get('/images', (req, res) => {
 
   async function resizeImage() {
     try {
-      await sharp("../cd0292-building-a-server-project-starter/images/fjord.jpg")
+      await sharp("../assets/palmtunnel.jpg")
         .resize({
           width: 150,
           height: 97
