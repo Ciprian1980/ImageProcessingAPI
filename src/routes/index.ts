@@ -1,4 +1,6 @@
 import express from "express";
+const fs = require('fs');
+const path = require('path');
 const sharp = require("sharp");
 const routes = express.Router();
 
@@ -10,7 +12,8 @@ routes.get('/images', (req, res) => {
   res.send('Processing image');
   const getMetadata = async (): Promise<any> => {
     try {
-      const metadata = await sharp('../assets/fjord.jpg').metadata();
+      const filePath = path.join(__dirname, './assets');
+      const metadata = await sharp(fs.openSync(filePath, 'fjord.jpeg')).metadata();
       console.log(metadata);
     } catch (error) {
       console.log(`An error occurred during processing: ${error}`);
@@ -20,7 +23,9 @@ routes.get('/images', (req, res) => {
 
   async function resizeImage() {
     try {
-      await sharp("../assets/palmtunnel.jpg")
+      const filePath = path.join(__dirname, './assets');
+      const metadata = await sharp(fs.openSync(filePath, 'fjord.jpeg')).metadata();
+      await sharp(metadata)
         .resize({
           width: 150,
           height: 97
