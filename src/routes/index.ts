@@ -5,11 +5,11 @@ const sharp = require("sharp");
 const routes = express.Router();
 const app = express();
 const fileUpload = require('express-fileupload');
-const image = import('./api/fjord.jpg');
+// const image = import('./api/fjord.jpg');
 
-routes.get('/', (req, res) => {
-  res.send('Main api route');
-})
+// routes.get('/', (req, res) => {
+//   res.send('Main api route');
+// })
 
 // app.use(fileUpload());
 
@@ -20,11 +20,12 @@ routes.get('/', (req, res) => {
 
 routes.get('/images', (req, res) => {
   res.send('Processing image');
+  console.log('image path is:', './api/fjord.jpeg');
   const getMetadata = async (): Promise<any> => {
     try {
-      const filePath = express.static(path.join(__dirname, image));//I could eventually erase it
+      const filePath = express.static(path.join(__dirname, './api/fjord.jpg'));
       const metadata = await sharp(fs.openSync(filePath)).metadata();
-      console.log('image path is:', '/assets/fjord.jpeg');
+      
     } catch (error) {
       console.log(`An error occurred during processing: ${error}`);
     }
@@ -33,8 +34,8 @@ routes.get('/images', (req, res) => {
 
   async function resizeImage() {
     try {
-      const filePath = path.join(__dirname, './assets');
-      const metadata = await sharp(fs.openSync('../assets/fjord.jpeg', 'r')).metadata();
+      const filePath = express.static(path.join(__dirname, './api/fjord.jpg'));
+      const metadata = await sharp(fs.openSync(filePath)).metadata();
       console.log(metadata)
       await sharp(metadata)
         .resize({
@@ -42,7 +43,7 @@ routes.get('/images', (req, res) => {
           height: 97
         })
         .toFormat("jpeg", { mozjpeg: true })
-        .toFile("../cd0292-building-a-server-project-starter/images/fjord-resized-compressed.jpeg");
+        .toFile("./cd0292-building-a-server-project-starter/images/fjord-resized-compressed.jpeg");
     } catch (error) {
       console.log(error);
     }
